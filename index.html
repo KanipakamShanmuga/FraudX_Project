@@ -1,32 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>FraudX Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FraudX Banking Dashboard</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h1>🔐 FraudX Login</h1>
+    <div class="container">
 
-<input type="text" id="username" placeholder="Username"><br><br>
-<input type="password" id="password" placeholder="Password"><br><br>
+        <h1>🏦 FraudX Banking System</h1>
 
-<button onclick="login()">Login</button>
+        <div class="card">
 
-<p id="error" style="color:red;"></p>
+            <input type="number" id="amount" placeholder="Enter Amount">
 
-<script>
-function login() {
-    let user = document.getElementById("username").value;
-    let pass = document.getElementById("password").value;
+            <input type="text" id="location" placeholder="Enter Location">
 
-    if (user === "admin" && pass === "1234") {
-        window.location.href = "dashboard.html";
-    } else {
-        document.getElementById("error").innerText = "Invalid Login!";
-    }
-}
-</script>
+            <input type="text" id="mobile" placeholder="Enter Mobile Number">
+
+            <button onclick="checkFraud()">
+                Check Transaction
+            </button>
+
+        </div>
+
+        <h2>Transaction History</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Amount</th>
+                    <th>Mobile</th>
+                    <th>Risk</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody id="transactionTable">
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <script src="script.js"></script>
 
 </body>
 </html>
