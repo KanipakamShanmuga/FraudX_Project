@@ -7,7 +7,6 @@ let timeLeft = 30;
 let currentMobile = "";
 let currentAmount = "";
 
-// Trusted Numbers
 let knownNumbers = [
     "9391526609",
     "9618643705"
@@ -26,7 +25,6 @@ function startTransaction() {
     currentMobile = mobile;
     currentAmount = amount;
 
-    // Known Number
     if (knownNumbers.includes(mobile)) {
 
         alert("Trusted Number\nTransaction Successful");
