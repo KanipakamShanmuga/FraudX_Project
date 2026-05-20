@@ -1,42 +1,49 @@
 let transactionId = 1;
 
-function checkFraud() {
+// Known trusted numbers
+let knownNumbers = [
+    "9391526609",
+    "9618643705"
+];
 
+function checkTransaction() {
+
+    let mobile = document.getElementById("mobile").value;
     let amount = document.getElementById("amount").value;
     let location = document.getElementById("location").value;
-    let mobile = document.getElementById("mobile").value;
 
-    if (amount === "" || location === "" || mobile === "") {
+    if (mobile === "" || amount === "" || location === "") {
         alert("Please fill all details");
         return;
     }
 
-    let riskScore = Math.floor(Math.random() * 100);
+    let otpStatus = "";
+    let transactionStatus = "Successful";
 
-    let status = "";
-    let color = "";
+    // Check known number
+    if (knownNumbers.includes(mobile)) {
 
-    if (riskScore > 70) {
-        status = "Fraud Detected";
-        color = "red";
+        otpStatus = "Trusted Number - No OTP";
+
+        alert("Trusted Number Detected\nMoney Sent Successfully");
+
+    } else {
+
+        let otp = Math.floor(100000 + Math.random() * 900000);
+
+        otpStatus = "OTP Generated";
+
+        alert("Unknown Number Detected\nOTP Verification Code: " + otp);
     }
-    else {
-        status = "Safe Transaction";
-        color = "green";
-    }
 
-    let otp = Math.floor(100000 + Math.random() * 900000);
+    addToTable(mobile, amount, otpStatus, transactionStatus);
 
-    alert("OTP Verification Code: " + otp);
-
-    addToTable(amount, mobile, riskScore, status, color);
-
+    document.getElementById("mobile").value = "";
     document.getElementById("amount").value = "";
     document.getElementById("location").value = "";
-    document.getElementById("mobile").value = "";
 }
 
-function addToTable(amount, mobile, riskScore, status, color) {
+function addToTable(mobile, amount, otpStatus, transactionStatus) {
 
     let table = document.getElementById("transactionTable");
 
@@ -44,11 +51,11 @@ function addToTable(amount, mobile, riskScore, status, color) {
 
     row.innerHTML = `
         <td>${transactionId}</td>
-        <td>₹${amount}</td>
         <td>${mobile}</td>
-        <td>${riskScore}%</td>
-        <td style="color:${color}; font-weight:bold;">
-            ${status}
+        <td>₹${amount}</td>
+        <td>${otpStatus}</td>
+        <td style="color:green; font-weight:bold;">
+            ${transactionStatus}
         </td>
     `;
 

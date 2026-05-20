@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FraudX Banking Dashboard</title>
+    <title>FraudX Banking System</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -17,14 +17,14 @@
 
         <div class="card">
 
+            <input type="text" id="mobile" placeholder="Enter Mobile Number">
+
             <input type="number" id="amount" placeholder="Enter Amount">
 
             <input type="text" id="location" placeholder="Enter Location">
 
-            <input type="text" id="mobile" placeholder="Enter Mobile Number">
-
-            <button onclick="checkFraud()">
-                Check Transaction
+            <button onclick="checkTransaction()">
+                Send Money
             </button>
 
         </div>
@@ -35,10 +35,10 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Amount</th>
                     <th>Mobile</th>
-                    <th>Risk</th>
-                    <th>Status</th>
+                    <th>Amount</th>
+                    <th>OTP Status</th>
+                    <th>Transaction</th>
                 </tr>
             </thead>
 
