@@ -1,63 +1,142 @@
 let transactionId = 1;
 
-// Known trusted numbers
+let generatedOTP = "";
+let timer;
+let timeLeft = 30;
+
+let currentMobile = "";
+let currentAmount = "";
+
+// Trusted Numbers
 let knownNumbers = [
     "9391526609",
     "9618643705"
 ];
 
-function checkTransaction() {
+function startTransaction() {
 
     let mobile = document.getElementById("mobile").value;
     let amount = document.getElementById("amount").value;
-    let location = document.getElementById("location").value;
 
-    if (mobile === "" || amount === "" || location === "") {
+    if (mobile === "" || amount === "") {
         alert("Please fill all details");
         return;
     }
 
-    let otpStatus = "";
-    let transactionStatus = "Successful";
+    currentMobile = mobile;
+    currentAmount = amount;
 
-    // Check known number
+    // Known Number
     if (knownNumbers.includes(mobile)) {
 
-        otpStatus = "Trusted Number - No OTP";
+        alert("Trusted Number\nTransaction Successful");
 
-        alert("Trusted Number Detected\nMoney Sent Successfully");
+        addToTable(mobile, amount, "Transaction Successful");
+
+        clearInputs();
 
     } else {
 
-        let otp = Math.floor(100000 + Math.random() * 900000);
+        generateOTP();
 
-        otpStatus = "OTP Generated";
-
-        alert("Unknown Number Detected\nOTP Verification Code: " + otp);
+        document.getElementById("otpBlock").style.display = "block";
     }
-
-    addToTable(mobile, amount, otpStatus, transactionStatus);
-
-    document.getElementById("mobile").value = "";
-    document.getElementById("amount").value = "";
-    document.getElementById("location").value = "";
 }
 
-function addToTable(mobile, amount, otpStatus, transactionStatus) {
+function generateOTP() {
+
+    generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+
+    alert("OTP Generated: " + generatedOTP);
+
+    startTimer();
+}
+
+function startTimer() {
+
+    clearInterval(timer);
+
+    timeLeft = 30;
+
+    document.getElementById("timerText").innerHTML =
+        "OTP Expires In: " + timeLeft + " seconds";
+
+    timer = setInterval(() => {
+
+        timeLeft--;
+
+        document.getElementById("timerText").innerHTML =
+            "OTP Expires In: " + timeLeft + " seconds";
+
+        if (timeLeft <= 0) {
+
+            clearInterval(timer);
+
+            alert("OTP Expired\nGenerating New OTP");
+
+            generateOTP();
+        }
+
+    }, 1000);
+}
+
+function verifyOTP() {
+
+    let enteredOTP = document.getElementById("otpInput").value;
+
+    if (enteredOTP === generatedOTP) {
+
+        clearInterval(timer);
+
+        alert("Transaction Successful");
+
+        addToTable(
+            currentMobile,
+            currentAmount,
+            "Transaction Successful"
+        );
+
+        document.getElementById("otpBlock").style.display = "none";
+
+        clearInputs();
+
+    } else {
+
+        alert("Wrong OTP\nTransaction Failed");
+
+        addToTable(
+            currentMobile,
+            currentAmount,
+            "Transaction Failed"
+        );
+    }
+}
+
+function addToTable(mobile, amount, status) {
 
     let table = document.getElementById("transactionTable");
 
     let row = table.insertRow();
 
+    let color = status === "Transaction Successful"
+        ? "green"
+        : "red";
+
     row.innerHTML = `
         <td>${transactionId}</td>
         <td>${mobile}</td>
         <td>₹${amount}</td>
-        <td>${otpStatus}</td>
-        <td style="color:green; font-weight:bold;">
-            ${transactionStatus}
+        <td style="color:${color}; font-weight:bold;">
+            ${status}
         </td>
     `;
 
     transactionId++;
+}
+
+function clearInputs() {
+
+    document.getElementById("mobile").value = "";
+    document.getElementById("amount").value = "";
+    document.getElementById("otpInput").value = "";
 }

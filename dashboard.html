@@ -21,11 +21,23 @@
 
             <input type="number" id="amount" placeholder="Enter Amount">
 
-            <input type="text" id="location" placeholder="Enter Location">
-
-            <button onclick="checkTransaction()">
+            <button onclick="startTransaction()">
                 Send Money
             </button>
+
+            <!-- OTP BLOCK -->
+
+            <div id="otpBlock" style="display:none;">
+
+                <input type="text" id="otpInput" placeholder="Enter OTP">
+
+                <p id="timerText"></p>
+
+                <button onclick="verifyOTP()">
+                    Verify OTP
+                </button>
+
+            </div>
 
         </div>
 
@@ -37,8 +49,7 @@
                     <th>ID</th>
                     <th>Mobile</th>
                     <th>Amount</th>
-                    <th>OTP Status</th>
-                    <th>Transaction</th>
+                    <th>Status</th>
                 </tr>
             </thead>
 
