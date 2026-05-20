@@ -14,36 +14,54 @@ let knownNumbers = [
 
 function startTransaction() {
 
-    let mobile = document.getElementById("mobile").value;
-    let amount = document.getElementById("amount").value;
+    let mobile =
+        document.getElementById("mobile").value;
+
+    let amount =
+        document.getElementById("amount").value;
 
     if (mobile === "" || amount === "") {
+
         alert("Please fill all details");
+
         return;
     }
 
     currentMobile = mobile;
     currentAmount = amount;
 
+    // TRUSTED NUMBER
+
     if (knownNumbers.includes(mobile)) {
 
         alert("Trusted Number\nTransaction Successful");
 
-        addToTable(mobile, amount, "Transaction Successful");
+        addToTable(
+            mobile,
+            amount,
+            "Transaction Successful"
+        );
 
         clearInputs();
 
-    } else {
+    }
+
+    // UNKNOWN NUMBER
+
+    else {
+
+        document.getElementById("otpBlock")
+            .style.display = "block";
 
         generateOTP();
-
-        document.getElementById("otpBlock").style.display = "block";
     }
 }
 
 function generateOTP() {
 
-    generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+    generatedOTP =
+        Math.floor(100000 + Math.random() * 900000)
+        .toString();
 
     alert("OTP Generated: " + generatedOTP);
 
@@ -56,21 +74,19 @@ function startTimer() {
 
     timeLeft = 30;
 
-    document.getElementById("timerText").innerHTML =
-        "OTP Expires In: " + timeLeft + " seconds";
+    updateTimer();
 
     timer = setInterval(() => {
 
         timeLeft--;
 
-        document.getElementById("timerText").innerHTML =
-            "OTP Expires In: " + timeLeft + " seconds";
+        updateTimer();
 
         if (timeLeft <= 0) {
 
             clearInterval(timer);
 
-            alert("OTP Expired\nGenerating New OTP");
+            alert("OTP Expired\nNew OTP Generated");
 
             generateOTP();
         }
@@ -78,9 +94,17 @@ function startTimer() {
     }, 1000);
 }
 
+function updateTimer() {
+
+    document.getElementById("timerText")
+        .innerHTML =
+        "OTP Expires In: " + timeLeft + " seconds";
+}
+
 function verifyOTP() {
 
-    let enteredOTP = document.getElementById("otpInput").value;
+    let enteredOTP =
+        document.getElementById("otpInput").value;
 
     if (enteredOTP === generatedOTP) {
 
@@ -94,11 +118,14 @@ function verifyOTP() {
             "Transaction Successful"
         );
 
-        document.getElementById("otpBlock").style.display = "none";
+        document.getElementById("otpBlock")
+            .style.display = "none";
 
         clearInputs();
 
-    } else {
+    }
+
+    else {
 
         alert("Wrong OTP\nTransaction Failed");
 
@@ -112,11 +139,13 @@ function verifyOTP() {
 
 function addToTable(mobile, amount, status) {
 
-    let table = document.getElementById("transactionTable");
+    let table =
+        document.getElementById("transactionTable");
 
     let row = table.insertRow();
 
-    let color = status === "Transaction Successful"
+    let color =
+        status === "Transaction Successful"
         ? "green"
         : "red";
 
