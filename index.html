@@ -1,77 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FraudX Banking System</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <h1>🏦 FraudX Banking System</h1>
+        <h1>🏦 FraudX Banking System</h1>
 
-    <div class="card">
+        <div class="card">
 
-        <!-- NUMBER FIRST -->
+            <!-- Mobile Number -->
+            <input
+                type="text"
+                id="mobile"
+                placeholder="Enter Mobile Number"
+            >
 
-        <input type="text"
-               id="mobile"
-               placeholder="Enter Mobile Number">
+            <!-- Amount -->
+            <input
+                type="number"
+                id="amount"
+                placeholder="Enter Amount"
+            >
 
-        <!-- AMOUNT SECOND -->
-
-        <input type="number"
-               id="amount"
-               placeholder="Enter Amount">
-
-        <button onclick="startTransaction()">
-            Send Money
-        </button>
-
-        <!-- OTP BLOCK -->
-
-        <div id="otpBlock" style="display:none;">
-
-            <input type="text"
-                   id="otpInput"
-                   placeholder="Enter OTP">
-
-            <p id="timerText"></p>
-
-            <button onclick="verifyOTP()">
-                Verify OTP
+            <!-- Send Money Button -->
+            <button onclick="startTransaction()">
+                Send Money
             </button>
+
+            <!-- OTP Section -->
+            <div id="otpBlock" style="display:none; margin-top:20px;">
+
+                <input
+                    type="text"
+                    id="otpInput"
+                    placeholder="Enter OTP"
+                >
+
+                <p id="timerText"></p>
+
+                <button onclick="verifyOTP()">
+                    Verify OTP
+                </button>
+
+            </div>
 
         </div>
 
+        <h2>📊 Transaction History</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Mobile Number</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody id="transactionTable">
+            </tbody>
+        </table>
+
     </div>
 
-    <h2>📊 Transaction History</h2>
-
-    <table>
-
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Mobile</th>
-                <th>Amount</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-
-        <tbody id="transactionTable">
-        </tbody>
-
-    </table>
-
-</div>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 
 </body>
 </html>

@@ -1,67 +1,50 @@
 let transactionId = 1;
 
 let generatedOTP = "";
-let timer;
+let timer = null;
 let timeLeft = 30;
 
 let currentMobile = "";
-let currentAmount = "";
-
-let knownNumbers = [
-    "9391526609",
-    "9618643705"
-];
+let currentAmount = 0;
 
 function startTransaction() {
 
-    let mobile =
-        document.getElementById("mobile").value;
+    const mobile = document.getElementById("mobile").value.trim();
+    const amount = parseInt(document.getElementById("amount").value);
 
-    let amount =
-        document.getElementById("amount").value;
-
-    if (mobile === "" || amount === "") {
-
-        alert("Please fill all details");
-
+    if (mobile === "" || isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid mobile number and amount");
         return;
     }
 
     currentMobile = mobile;
     currentAmount = amount;
 
-    // TRUSTED NUMBER
-
-    if (knownNumbers.includes(mobile)) {
-
-        alert("Trusted Number\nTransaction Successful");
+    // No OTP for ₹10,000 or less
+    if (amount <= 10000) {
 
         addToTable(
-            mobile,
-            amount,
+            currentMobile,
+            currentAmount,
             "Transaction Successful"
         );
 
+        alert("Transaction Successful\nNo OTP Required");
+
         clearInputs();
-
+        return;
     }
 
-    // UNKNOWN NUMBER
+    // OTP required above ₹10,000
+    document.getElementById("otpBlock").style.display = "block";
 
-    else {
-
-        document.getElementById("otpBlock")
-            .style.display = "block";
-
-        generateOTP();
-    }
+    generateOTP();
 }
 
 function generateOTP() {
 
     generatedOTP =
-        Math.floor(100000 + Math.random() * 900000)
-        .toString();
+        Math.floor(100000 + Math.random() * 900000).toString();
 
     alert("OTP Generated: " + generatedOTP);
 
@@ -76,7 +59,7 @@ function startTimer() {
 
     updateTimer();
 
-    timer = setInterval(() => {
+    timer = setInterval(function () {
 
         timeLeft--;
 
@@ -86,7 +69,7 @@ function startTimer() {
 
             clearInterval(timer);
 
-            alert("OTP Expired\nNew OTP Generated");
+            alert("OTP Expired. New OTP Generated.");
 
             generateOTP();
         }
@@ -96,21 +79,18 @@ function startTimer() {
 
 function updateTimer() {
 
-    document.getElementById("timerText")
-        .innerHTML =
-        "OTP Expires In: " + timeLeft + " seconds";
+    document.getElementById("timerText").innerHTML =
+        "OTP expires in: " + timeLeft + " seconds";
 }
 
 function verifyOTP() {
 
-    let enteredOTP =
-        document.getElementById("otpInput").value;
+    const enteredOTP =
+        document.getElementById("otpInput").value.trim();
 
     if (enteredOTP === generatedOTP) {
 
         clearInterval(timer);
-
-        alert("Transaction Successful");
 
         addToTable(
             currentMobile,
@@ -118,36 +98,35 @@ function verifyOTP() {
             "Transaction Successful"
         );
 
-        document.getElementById("otpBlock")
-            .style.display = "none";
+        alert("Transaction Successful");
+
+        document.getElementById("otpBlock").style.display = "none";
 
         clearInputs();
-
     }
-
     else {
-
-        alert("Wrong OTP\nTransaction Failed");
 
         addToTable(
             currentMobile,
             currentAmount,
             "Transaction Failed"
         );
+
+        alert("Wrong OTP. Transaction Failed");
     }
 }
 
 function addToTable(mobile, amount, status) {
 
-    let table =
+    const table =
         document.getElementById("transactionTable");
 
-    let row = table.insertRow();
+    const row = table.insertRow();
 
-    let color =
+    const color =
         status === "Transaction Successful"
-        ? "green"
-        : "red";
+            ? "green"
+            : "red";
 
     row.innerHTML = `
         <td>${transactionId}</td>
@@ -166,4 +145,7 @@ function clearInputs() {
     document.getElementById("mobile").value = "";
     document.getElementById("amount").value = "";
     document.getElementById("otpInput").value = "";
+
+    currentMobile = "";
+    currentAmount = 0;
 }
